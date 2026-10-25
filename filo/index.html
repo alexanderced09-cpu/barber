@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FILO — Barbería</title>
+<meta name="description" content="FILO, barbería de precisión para hombre: corte a tijera y máquina, degradados, barba y afeitado a navaja. Reserva tu cita online.">
+<meta name="theme-color" content="#151615">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Sofia+Sans+Extra+Condensed:wght@900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero.jpg">
+<link rel="stylesheet" href="styles.css">
+<script>
+  // Decide la intro antes del primer pintado: una vez por sesión y nunca con movimiento reducido.
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var seen = false;
+    try { seen = sessionStorage.getItem('filo-intro') === '1'; } catch (e) {}
+    if (/[?&]intro=(replay|scrub)/.test(location.search)) seen = false; // revisión de la intro
+    if (!reduce && !seen) d.classList.add('intro-on');
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+
+<!-- INTRO: línea de corte, tijeras y el logotipo que se coloca en la cabecera -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-bg" id="introBg"></div>
+  <svg class="intro-scene" id="introScene" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <g id="frags"></g>
+    <g class="shears-move" id="shearsMove">
+      <svg class="shears" x="800" y="370" width="480" height="300" viewBox="-240 -150 480 300" overflow="visible">
+        <g transform="scale(-1 1)">
+          <g class="blade-b-enter"><g class="blade-b">
+            <path d="M -6 10 C 120 13 300 9 442 0 L -6 -5 Z" fill="#8F918C"/>
+            <path d="M -4 10 L -70 8 C -112 6 -138 -6 -152 -26 L -140 -33 C -124 -16 -102 -8 -70 -7 L -4 -5 Z" fill="#8F918C"/>
+            <circle cx="-172" cy="-52" r="26" fill="none" stroke="#8F918C" stroke-width="11"/>
+          </g></g>
+          <g class="blade-a-enter"><g class="blade-a">
+            <path d="M -6 -10 C 120 -13 300 -9 442 0 L -6 5 Z" fill="#C8CAC5"/>
+            <path d="M 60 -9 C 200 -10 320 -6 430 -1" fill="none" stroke="#F2F0E9" stroke-width="1.4" opacity=".6"/>
+            <path d="M -4 -10 L -70 -8 C -112 -6 -138 6 -152 26 L -140 33 C -124 16 -102 8 -70 7 L -4 5 Z" fill="#C8CAC5"/>
+            <circle cx="-172" cy="52" r="26" fill="none" stroke="#C8CAC5" stroke-width="11"/>
+            <path d="M -192 72 C -216 92 -228 114 -222 134 C -213 118 -203 104 -185 88 Z" fill="#C8CAC5"/>
+            <circle r="9" fill="#C9BBA7"/><circle r="3" fill="#151615"/>
+          </g></g>
+        </g>
+      </svg>
+    </g>
+  </svg>
+  <div class="intro-line" id="introLine"></div>
+  <div class="intro-logo" id="introLogo"><span>FILO</span></div>
+</div>
+
+<header class="site-header" id="header">
+  <a class="brand" id="brand" href="#top" aria-label="FILO, inicio">FILO</a>
+  <nav class="nav" aria-label="Principal">
+    <ul>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+    </ul>
+  </nav>
+  <div class="header-end">
+    <a class="header-cta" id="headerCta" href="#reserva" data-book>Reservar</a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Menú móvil">
+    <ul>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+      <li><a href="#reserva" data-book>Reservar cita</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- PORTADA: fotografía panorámica con una capa clara para leer el texto -->
+  <section class="hero" id="top" data-theme="light" aria-labelledby="heroTitle">
+    <div class="hero-media" id="heroMedia" aria-hidden="true">
+      <img src="assets/hero.jpg" alt="" width="2400" height="1600" fetchpriority="high">
+    </div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <h1 id="heroTitle" class="hero-title" data-hero>Barbería de precisión para hombre</h1>
+      <p class="hero-lead" data-hero>Corte a tijera y máquina, degradados, barba y afeitado a navaja. Con cita, a tu hora.</p>
+      <div class="hero-actions" data-hero>
+        <a class="btn btn-primary" href="#reserva" data-book>Reservar cita</a>
+        <a class="link-line" href="#equipo">Conoce al equipo</a>
+      </div>
+    </div>
+    <dl class="hero-facts" data-hero>
+      <div><dt>Hoy</dt><dd id="factToday">—</dd></div>
+      <div class="fact-next" id="factNextWrap" hidden><dt>Próxima hora libre</dt><dd><button type="button" class="fact-link" id="factNext"></button></dd></div>
+    </dl>
+  </section>
+
+  <!-- MANIFIESTO (fijado) -->
+  <section class="manifesto" id="manifesto" data-theme="light" aria-labelledby="manTitle">
+    <div class="manifesto-stage">
+      <figure class="man-photo man-a" data-speed="1.25"><img src="assets/m-comb.jpg" alt="Barbero recortando con tijeras de entresacar sobre peine" width="1400" height="934" loading="lazy"></figure>
+      <figure class="man-photo man-b" data-speed="0.8"><img src="assets/m-clipper.jpg" alt="Máquina de corte perfilando la nuca de un cliente" width="1400" height="934" loading="lazy"></figure>
+      <figure class="man-photo man-c" data-speed="1.6"><img src="assets/m-tools.jpg" alt="Tijeras de barbero sobre una mesa de madera" width="1400" height="934" loading="lazy"></figure>
+      <div class="manifesto-copy">
+        <h2 id="manTitle" class="man-title"><span class="w">Se</span> <span class="w">nota</span> <span class="w">tres</span><br><span class="w">semanas</span> <span class="w">después</span></h2>
+        <p class="man-text">Un buen corte no termina cuando te levantas de la silla. Lo trabajamos para que siga en su sitio mientras crece: la línea limpia, el degradado sin saltos, la barba en su forma.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="services" id="servicios" data-theme="dark" aria-labelledby="srvTitle">
+    <div class="srv-media">
+      <div class="srv-frame" id="srvFrame">
+        <img class="is-on" src="assets/s-tijera.jpg" alt="Barbero cortando a tijera el pelo de un cliente con barba" width="1400" height="2100" loading="lazy" data-srv-img="0">
+        <img src="assets/s-degradado.jpg" alt="Degradado a máquina en la nuca de un cliente" width="1400" height="2100" loading="lazy" data-srv-img="1">
+        <img src="assets/s-diseno.jpg" alt="Barbero dibujando líneas en un degradado con una navaja" width="1400" height="2100" loading="lazy" data-srv-img="2">
+        <img src="assets/s-barba.jpg" alt="Perfil de un hombre con barba espesa y degradado" width="1600" height="2400" loading="lazy" data-srv-img="3">
+        <img src="assets/s-navaja.jpg" alt="Afeitado de barba a navaja en blanco y negro" width="1400" height="934" loading="lazy" data-srv-img="4">
+        <img src="assets/s-canas.jpg" alt="Retrato en blanco y negro de un hombre con barba y canas" width="1400" height="1750" loading="lazy" data-srv-img="5">
+        <div class="srv-plate" aria-hidden="true">
+          <svg viewBox="0 0 120 120" id="srvDiagram"></svg>
+          <span id="srvTech"></span>
+        </div>
+      </div>
+    </div>
+    <div class="srv-list-wrap">
+      <h2 id="srvTitle" class="sec-title" data-reveal>Servicios</h2>
+      <p class="sec-lead" data-reveal>Lo que hacemos, sin rodeos. Al reservar no tienes que elegir servicio: lo hablamos en la silla.</p>
+      <ul class="srv-list" id="srvList"></ul>
+    </div>
+  </section>
+
+  <!-- EQUIPO: el título vive en su propia columna fija; los retratos pasan a su lado -->
+  <section class="team" id="equipo" data-theme="light" aria-labelledby="teamTitle">
+    <div class="team-aside">
+      <h2 id="teamTitle" class="team-title">Conoce al equipo</h2>
+      <p class="team-lead">Cada barbero tiene su especialidad. Al reservar, eliges con quién o lo dejas en nuestras manos.</p>
+    </div>
+    <div class="team-list" id="teamList"></div>
+  </section>
+
+  <!-- UBICACIÓN: todo sale de la configuración del negocio; sin datos, no se inventa nada -->
+  <section class="place" id="ubicacion" data-theme="light" aria-labelledby="placeTitle">
+    <div class="place-copy">
+      <h2 id="placeTitle" class="sec-title" data-reveal>Dónde estamos</h2>
+      <address class="place-address is-pending" id="placeAddress" data-reveal>La dirección de la barbería se publicará aquí en cuanto esté confirmada.</address>
+      <p class="place-notes" id="placeNotes" hidden></p>
+      <div class="place-actions" data-reveal>
+        <a class="btn btn-primary" id="placeDirections" href="#" target="_blank" rel="noopener" hidden>Cómo llegar</a>
+        <a class="link-line" id="placeOpen" href="#" target="_blank" rel="noopener" hidden>Abrir en Google Maps</a>
+        <a class="link-line" id="placePhone" href="#" hidden></a>
+      </div>
+      <div class="place-hours" data-reveal>
+        <h3>Horario</h3>
+        <dl id="placeHours"></dl>
+        <div class="place-closed" id="placeClosed" hidden>
+          <h4>Próximos días sin servicio</h4>
+          <ul id="placeClosedList"></ul>
+        </div>
+      </div>
+    </div>
+    <figure class="place-map" id="placeMap" hidden></figure>
+  </section>
+
+  <!-- RESERVA: el botón de la cabecera se expande hasta ocupar la pantalla -->
+  <section class="booking" id="reserva" data-theme="dark" aria-labelledby="bkTitle">
+    <div class="bk-stage" id="bkStage">
+      <h2 class="bk-headline" id="bkHeadline">Tu próximo corte<br>empieza aquí</h2>
+      <div class="bk-rail" id="bkRail" aria-hidden="true"></div>
+      <div class="bk-surface" id="bkSurface">
+        <button type="button" class="bk-cta" id="bkCta" aria-label="Abrir la reserva"><span id="bkLabel">Reservar</span></button>
+        <div class="bk-ui" id="bkUi">
+          <div class="bk-head">
+            <div>
+              <h2 id="bkTitle" class="bk-title">Reserva tu cita</h2>
+              <p class="bk-intro" id="bkIntro">Elige barbero, día y hora. Solo te pedimos tu nombre y tu teléfono.</p>
+            </div>
+            <button type="button" class="link-line bk-back" id="bkBack">Volver a la página</button>
+          </div>
+          <form class="bk-form" id="bkForm" novalidate>
+            <div class="bk-main">
+              <p class="bk-status" id="bkStatus" role="status"></p>
+              <fieldset class="bk-block" id="blkPro">
+                <legend>Barbero</legend>
+                <p class="bk-hint" id="hintPro"></p>
+                <div class="pros" id="optPros"></div>
+              </fieldset>
+              <fieldset class="bk-block" id="blkDay">
+                <legend>Día</legend>
+                <div class="dates" id="optDates"></div>
+              </fieldset>
+              <fieldset class="bk-block" id="blkTime">
+                <legend>Hora</legend>
+                <p class="bk-hint" id="hintTime">Elige un día para ver las horas libres.</p>
+                <div class="times" id="optTimes"></div>
+              </fieldset>
+            </div>
+            <aside class="bk-summary" aria-labelledby="sumTitle">
+              <h3 id="sumTitle">Revisa tu cita</h3>
+              <dl class="sum-list">
+                <div><dt>Barbero</dt><dd data-sum="pro">Sin preferencia</dd></div>
+                <div><dt>Día</dt><dd data-sum="date">Sin elegir</dd></div>
+                <div><dt>Hora</dt><dd data-sum="time">Sin elegir</dd></div>
+              </dl>
+              <div class="field">
+                <label for="fName">Nombre</label>
+                <input id="fName" name="name" autocomplete="name" required minlength="2" maxlength="80" aria-describedby="errName">
+                <p class="field-err" id="errName"></p>
+              </div>
+              <div class="field">
+                <label for="fPhone">Teléfono</label>
+                <input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" aria-describedby="hintPhone errPhone">
+                <p class="field-hint" id="hintPhone">Solo para contactarte sobre esta cita.</p>
+                <p class="field-err" id="errPhone"></p>
+              </div>
+              <p class="field-err" id="errForm" role="alert"></p>
+              <button type="submit" class="btn btn-light bk-confirm" id="bkSubmit"><span class="btn-label">Confirmar reserva</span></button>
+            </aside>
+          </form>
+          <div class="bk-result" id="bkResult" hidden tabindex="-1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" data-theme="dark">
+  <div class="foot-mark" aria-hidden="true">FILO</div>
+  <div class="foot-row">
+    <p>FILO, barbería. Prototipo de demostración: equipo, horario y fotografías son de muestra.</p>
+    <p id="footPlace">Dirección y teléfono pendientes de confirmar.</p>
+    <p class="foot-credits">Fotografía: Zachary Lancaster, Gulom Nazarov, Hai Phung, František Čaník, Salah Regouane, Michael DeMoya, Agustin Fernandez, Ahmad Ebadi, Nathon Oski, Mehdi Raad, Alyona Grishina, Lukas Kaufmann, Aurelien Thomas, Cherry Laithang y Andrea Donato, en <a href="https://unsplash.com">Unsplash</a>.</p>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

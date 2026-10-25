@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F2F0E9">
+<title>Panel — FILO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- Acceso -->
+<main class="login" id="login" hidden>
+  <form id="loginForm" class="login-card" novalidate>
+    <p class="login-brand">FILO</p>
+    <h1>Panel de la barbería</h1>
+    <p>Solo para el personal.</p>
+    <label for="pw">Contraseña</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn btn-primary" type="submit" id="loginBtn">Entrar</button>
+  </form>
+</main>
+
+<div class="shell" id="shell" hidden>
+  <aside class="side">
+    <a class="side-brand" href="./">FILO <span>Panel</span></a>
+    <nav class="nav" id="nav" aria-label="Secciones del panel">
+      <a href="#inicio" data-view="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg><span>Inicio</span></a>
+      <a href="#agenda" data-view="agenda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v5M16 3v5"/></svg><span>Agenda</span></a>
+      <a href="#cierres" data-view="cierres"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M9 13l6 5M15 13l-6 5"/></svg><span>Cierres</span></a>
+      <a href="#horarios" data-view="horarios"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg><span>Horarios</span></a>
+      <a href="#negocio" data-view="negocio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><span>Negocio</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="/" target="_blank" rel="noopener">Ver la web</a>
+      <button type="button" id="logout">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- INICIO -->
+    <section class="view" id="v-inicio" aria-labelledby="hInicio" hidden>
+      <header class="vhead">
+        <div>
+          <h1 id="hInicio">Inicio</h1>
+          <p class="sub" id="homeDate"></p>
+        </div>
+        <button type="button" class="btn btn-ghost" data-refresh>Actualizar</button>
+      </header>
+      <div class="stats" id="homeStats" aria-live="polite"></div>
+      <div class="home-grid">
+        <section class="card" aria-labelledby="hNext">
+          <h2 id="hNext">Próxima cita</h2>
+          <div id="homeNext"></div>
+        </section>
+        <section class="card" aria-labelledby="hToday">
+          <div class="card-head"><h2 id="hToday">Hoy</h2><a class="link" href="#agenda" data-goto="today">Ver en la agenda</a></div>
+          <div id="homeToday"></div>
+        </section>
+        <section class="card" aria-labelledby="hUp">
+          <div class="card-head"><h2 id="hUp">Próximos días</h2><a class="link" href="#agenda" data-goto="upcoming">Ver todas</a></div>
+          <div id="homeUpcoming"></div>
+        </section>
+        <section class="card card-short" aria-labelledby="hShort">
+          <h2 id="hShort">Accesos directos</h2>
+          <div class="shortcuts">
+            <a href="#agenda" data-goto="calendar">Calendario de citas</a>
+            <a href="#cierres">Marcar un cierre</a>
+            <a href="#horarios">Cambiar horarios</a>
+            <a href="#negocio">Datos y WhatsApp</a>
+          </div>
+          <div id="homeClosures"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="view" id="v-agenda" aria-labelledby="hAgenda" hidden>
+      <header class="vhead">
+        <div>
+          <h1 id="hAgenda">Agenda</h1>
+          <p class="sub" id="agFinding"></p>
+        </div>
+        <div class="seg" role="group" aria-label="Vista">
+          <button type="button" data-mode="list" aria-pressed="true">Lista</button>
+          <button type="button" data-mode="calendar" aria-pressed="false">Calendario</button>
+        </div>
+      </header>
+      <div class="toolbar" role="search">
+        <div class="seg" role="group" aria-label="Periodo" id="agRange">
+          <button type="button" data-range="today" aria-pressed="true">Hoy</button>
+          <button type="button" data-range="upcoming" aria-pressed="false">Próximas</button>
+          <button type="button" data-range="date" aria-pressed="false">Fecha</button>
+          <button type="button" data-range="range" aria-pressed="false">Rango</button>
+        </div>
+        <div class="tb-dates" id="agDates" hidden>
+          <label class="sr" for="agFrom">Desde</label><input type="date" id="agFrom">
+          <span id="agTo-wrap"><label class="sr" for="agTo">Hasta</label><span aria-hidden="true">–</span> <input type="date" id="agTo"></span>
+        </div>
+        <label class="sr" for="agPro">Barbero</label>
+        <select id="agPro"><option value="">Todo el equipo</option></select>
+        <label class="sr" for="agStatus">Estado</label>
+        <select id="agStatus">
+          <option value="active">Activas</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="confirmada">Confirmadas</option>
+          <option value="cancelada">Canceladas</option>
+          <option value="all">Todas</option>
+        </select>
+        <label class="sr" for="agQ">Buscar</label>
+        <input type="search" id="agQ" placeholder="Buscar por nombre o teléfono" autocomplete="off">
+      </div>
+      <div class="cal-wrap" id="agCalWrap" hidden>
+        <div class="cal-head">
+          <button type="button" class="icon-btn" id="agPrev" aria-label="Mes anterior">‹</button>
+          <h2 id="agMonth"></h2>
+          <button type="button" class="icon-btn" id="agNext" aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="cal" id="agCal"></div>
+        <p class="legend"><span class="lg lg-book"></span>citas activas <span class="lg lg-closed"></span>cerrado <span class="lg lg-part"></span>cierre parcial</p>
+      </div>
+      <div id="agList" class="list" aria-busy="true"></div>
+    </section>
+
+    <!-- CIERRES -->
+    <section class="view" id="v-cierres" aria-labelledby="hCierres" hidden>
+      <header class="vhead">
+        <div>
+          <h1 id="hCierres">Cierres</h1>
+          <p class="sub">Días o franjas sin servicio. Desaparecen al momento de la reserva en la web. Las citas que ya existan no se cancelan solas: se te avisa.</p>
+        </div>
+      </header>
+      <div class="cl-grid">
+        <div class="card">
+          <div class="cal-head">
+            <button type="button" class="icon-btn" id="clPrev" aria-label="Mes anterior">‹</button>
+            <h2 id="clMonth"></h2>
+            <button type="button" class="icon-btn" id="clNext" aria-label="Mes siguiente">›</button>
+          </div>
+          <div class="cal cal-pick" id="clCal"></div>
+          <p class="legend">Pulsa un día para elegirlo y otro para marcar un rango. <span class="lg lg-closed"></span>cerrado <span class="lg lg-part"></span>parcial</p>
+        </div>
+        <form class="card cl-form" id="clForm" novalidate>
+          <h2>Nuevo cierre</h2>
+          <p class="cl-sel" id="clSel">Elige uno o varios días en el calendario.</p>
+          <div class="fld-row">
+            <div class="fld"><label for="clFrom">Desde</label><input type="date" id="clFrom" required></div>
+            <div class="fld"><label for="clTo">Hasta</label><input type="date" id="clTo"></div>
+          </div>
+          <div class="fld" id="clProWrap"><label for="clPro">Afecta a</label><select id="clPro"><option value="">Toda la barbería</option></select></div>
+          <fieldset class="fld">
+            <legend>Duración</legend>
+            <div class="seg seg-full" role="radiogroup">
+              <label><input type="radio" name="clKind" value="day" checked> Todo el día</label>
+              <label><input type="radio" name="clKind" value="span"> Una franja</label>
+            </div>
+          </fieldset>
+          <div class="fld-row" id="clSpan" hidden>
+            <div class="fld"><label for="clStart">De</label><input type="time" id="clStart" step="900" value="10:00"></div>
+            <div class="fld"><label for="clEnd">A</label><input type="time" id="clEnd" step="900" value="14:00"></div>
+          </div>
+          <div class="fld"><label for="clReason">Motivo <span class="opt">(solo lo ve el equipo)</span></label><input type="text" id="clReason" maxlength="80" placeholder="Vacaciones, festivo, formación…"></div>
+          <p class="err" id="clErr" role="alert"></p>
+          <div class="conflict" id="clConflict" hidden></div>
+          <button class="btn btn-primary" type="submit" id="clSubmit">Guardar cierre</button>
+        </form>
+      </div>
+      <h2 class="h2">Próximos cierres</h2>
+      <ul class="closures" id="clList" aria-live="polite"></ul>
+    </section>
+
+    <!-- HORARIOS -->
+    <section class="view" id="v-horarios" aria-labelledby="hHorarios" hidden>
+      <header class="vhead">
+        <div>
+          <h1 id="hHorarios">Horarios</h1>
+          <p class="sub">Lo que guardes aquí cambia al momento las horas que se ofrecen en la web. Para un descanso, divide el día en dos franjas.</p>
+        </div>
+      </header>
+      <form id="hrForm" novalidate>
+        <div class="card hr-basics">
+          <div class="fld"><label for="hrSlot">Duración de cada cita</label>
+            <select id="hrSlot"><option>15</option><option>20</option><option>30</option><option>40</option><option>45</option><option>60</option><option>75</option><option>90</option><option>120</option></select>
+            <p class="hint">minutos. Las horas se ofrecen cada tanto tiempo.</p></div>
+          <div class="fld"><label for="hrWin">Reservas con antelación de hasta</label>
+            <input type="number" id="hrWin" min="1" max="120" inputmode="numeric"><p class="hint">días</p></div>
+        </div>
+        <div class="card">
+          <h2>Horario de la barbería</h2>
+          <div class="week" id="hrWeek"></div>
+        </div>
+        <div class="card" id="hrProsCard">
+          <h2>Horario propio por barbero <span class="opt">(opcional)</span></h2>
+          <p class="sub">Sin horario propio, cada barbero trabaja el horario de la barbería.</p>
+          <div id="hrPros"></div>
+        </div>
+        <p class="err" id="hrErr" role="alert"></p>
+        <div class="conflict" id="hrConflict" hidden></div>
+        <div class="savebar"><button class="btn btn-primary" type="submit" id="hrSave">Guardar horarios</button><span class="dirty" id="hrDirty" hidden>Cambios sin guardar</span></div>
+      </form>
+    </section>
+
+    <!-- NEGOCIO -->
+    <section class="view" id="v-negocio" aria-labelledby="hNegocio" hidden>
+      <header class="vhead">
+        <div>
+          <h1 id="hNegocio">Negocio</h1>
+          <p class="sub">Dirección, mapa y equipo que se muestran en la web. Sin dirección no se muestra mapa; sin número no hay botón de WhatsApp.</p>
+        </div>
+      </header>
+      <form id="bzForm" novalidate>
+        <div class="card">
+          <h2>Ubicación</h2>
+          <div class="fld-grid">
+            <div class="fld span2"><label for="bzAddress">Dirección</label><input id="bzAddress" maxlength="160" placeholder="Calle y número"></div>
+            <div class="fld"><label for="bzCity">Ciudad</label><input id="bzCity" maxlength="80"></div>
+            <div class="fld"><label for="bzPhone">Teléfono público</label><input id="bzPhone" type="tel" maxlength="30"></div>
+            <div class="fld"><label for="bzLat">Latitud <span class="opt">(opcional)</span></label><input id="bzLat" inputmode="decimal" placeholder="40.4168"></div>
+            <div class="fld"><label for="bzLng">Longitud <span class="opt">(opcional)</span></label><input id="bzLng" inputmode="decimal" placeholder="-3.7038"></div>
+            <div class="fld span2"><label for="bzMaps">Enlace de Google Maps <span class="opt">(opcional)</span></label><input id="bzMaps" type="url" placeholder="https://maps.app.goo.gl/…"></div>
+            <div class="fld span2"><label for="bzNotes">Indicaciones <span class="opt">(opcional)</span></label><input id="bzNotes" maxlength="160" placeholder="Local a pie de calle, junto a…"></div>
+            <div class="fld"><label for="bzTz">Zona horaria</label><input id="bzTz" maxlength="60"></div>
+          </div>
+          <p class="hint">Con latitud y longitud el mapa marca el punto exacto; si no, se busca la dirección escrita.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Equipo</h2><button type="button" class="btn btn-ghost" id="bzAdd">Añadir barbero</button></div>
+          <div class="team" id="bzTeam"></div>
+        </div>
+        <p class="err" id="bzErr" role="alert"></p>
+        <div class="conflict" id="bzConflict" hidden></div>
+        <div class="savebar"><button class="btn btn-primary" type="submit" id="bzSave">Guardar</button><span class="dirty" id="bzDirty" hidden>Cambios sin guardar</span></div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<!-- Detalle de una cita -->
+<dialog id="dlgBook" aria-labelledby="dbTitle">
+  <div class="dlg">
+    <div class="dlg-head"><h2 id="dbTitle">Cita</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></div>
+    <div id="dbBody"></div>
+    <p class="err" id="dbErr" role="alert"></p>
+    <div class="dlg-actions" id="dbActions"></div>
+  </div>
+</dialog>
+
+<!-- Confirmación genérica -->
+<dialog id="dlgAsk" aria-labelledby="daTitle">
+  <div class="dlg">
+    <h2 id="daTitle"></h2>
+    <p id="daText"></p>
+    <p class="err" id="daErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn btn-ghost" data-close>Volver</button>
+      <button type="button" class="btn btn-primary" id="daOk"></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Reprogramar -->
+<dialog id="dlgMove" aria-labelledby="dmTitle">
+  <form class="dlg" id="moveForm" novalidate>
+    <div class="dlg-head"><h2 id="dmTitle">Reprogramar cita</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></div>
+    <p id="dmText"></p>
+    <div class="fld-row">
+      <div class="fld"><label for="mDate">Día</label><input type="date" id="mDate" required></div>
+      <div class="fld" id="mProWrap"><label for="mPro">Barbero</label><select id="mPro"></select></div>
+    </div>
+    <fieldset class="fld">
+      <legend>Hora libre</legend>
+      <div class="slots" id="mSlots"></div>
+    </fieldset>
+    <p class="err" id="dmErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button class="btn btn-ghost" type="button" data-close>Volver</button>
+      <button class="btn btn-primary" type="submit" id="dmConfirm">Revisar el cambio</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Editar cierre -->
+<dialog id="dlgClosure" aria-labelledby="dxTitle">
+  <form class="dlg" id="cxForm" novalidate>
+    <div class="dlg-head"><h2 id="dxTitle">Editar cierre</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></div>
+    <p id="dxText"></p>
+    <fieldset class="fld">
+      <legend>Duración</legend>
+      <div class="seg seg-full" role="radiogroup">
+        <label><input type="radio" name="cxKind" value="day"> Todo el día</label>
+        <label><input type="radio" name="cxKind" value="span"> Una franja</label>
+      </div>
+    </fieldset>
+    <div class="fld-row" id="cxSpan">
+      <div class="fld"><label for="cxStart">De</label><input type="time" id="cxStart" step="900"></div>
+      <div class="fld"><label for="cxEnd">A</label><input type="time" id="cxEnd" step="900"></div>
+    </div>
+    <div class="fld"><label for="cxReason">Motivo</label><input type="text" id="cxReason" maxlength="80"></div>
+    <p class="err" id="cxErr" role="alert"></p>
+    <div class="conflict" id="cxConflict" hidden></div>
+    <div class="dlg-actions">
+      <button class="btn btn-ghost" type="button" data-close>Volver</button>
+      <button class="btn btn-primary" type="submit" id="cxSave">Guardar</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="admin.js" defer></script>
+</body>
+</html>

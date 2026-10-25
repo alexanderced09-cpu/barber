@@ -1,0 +1,10 @@
+{
+  "name": "filo-barberia",
+  "private": true,
+  "description": "FILO: web, reservas y panel de la barbería. Servidor Node sin dependencias.",
+  "type": "module",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node server/server.mjs"
+  }
+}

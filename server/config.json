@@ -1,0 +1,37 @@
+{
+  "_instrucciones": "VALORES INICIALES. Solo se usan la primera vez que arranca el servidor con una base de datos nueva. Después, el horario, los datos del negocio, la ubicación y el equipo (con sus números de WhatsApp) se editan desde el panel /admin/ → Horarios y Negocio. 'whatsapp' va en formato internacional: código de país + número, sin '+' ni espacios. Vacío = sin botón de WhatsApp para ese profesional.",
+  "studioName": "FILO",
+  "timezone": "Europe/Madrid",
+  "location": {
+    "_nota": "Ubicación real de la barbería. address y city se muestran tal cual; lat/lng (números) activan el mapa; mapsUrl (opcional) sustituye al enlace de Google Maps generado.",
+    "address": "",
+    "city": "",
+    "lat": null,
+    "lng": null,
+    "mapsUrl": "",
+    "phone": "",
+    "notes": ""
+  },
+  "schedule": {
+    "_nota": "Horario de MUESTRA. week: índice 0 = domingo … 6 = sábado. Cada día: open y franjas (ranges) para incluir descansos.",
+    "slotMinutes": 45,
+    "windowDays": 21,
+    "week": [
+      { "open": false, "ranges": [{ "from": "10:00", "to": "14:00" }] },
+      { "open": false, "ranges": [{ "from": "10:00", "to": "20:00" }] },
+      { "open": true, "ranges": [{ "from": "10:00", "to": "14:00" }, { "from": "16:00", "to": "20:00" }] },
+      { "open": true, "ranges": [{ "from": "10:00", "to": "14:00" }, { "from": "16:00", "to": "20:00" }] },
+      { "open": true, "ranges": [{ "from": "10:00", "to": "14:00" }, { "from": "16:00", "to": "20:00" }] },
+      { "open": true, "ranges": [{ "from": "10:00", "to": "14:00" }, { "from": "16:00", "to": "20:30" }] },
+      { "open": true, "ranges": [{ "from": "09:30", "to": "14:30" }] }
+    ]
+  },
+  "_legacy": "Los identificadores del equipo de muestra anterior se reasignan para conservar sus reservas.",
+  "legacyProfessionalIds": { "lia": "leo", "ines": "ivan", "noa": "nico" },
+  "professionals": [
+    { "id": "leo", "name": "Leo Ortega", "first": "Leo", "role": "Corte clásico a tijera", "photo": "assets/b1.jpg", "whatsapp": "" },
+    { "id": "ivan", "name": "Iván Calvo", "first": "Iván", "role": "Degradados y diseño", "photo": "assets/b2.jpg", "whatsapp": "" },
+    { "id": "bruno", "name": "Bruno Sáez", "first": "Bruno", "role": "Barba y afeitado a navaja", "photo": "assets/b3.jpg", "whatsapp": "" },
+    { "id": "nico", "name": "Nico Ferrer", "first": "Nico", "role": "Texturas y cabello rizado", "photo": "assets/b4.jpg", "whatsapp": "" }
+  ]
+}
