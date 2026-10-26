@@ -1,9 +1,12 @@
-# Render Blueprint: un servicio web Node con un disco persistente para la base de datos.
+# Render Blueprint: un servicio web Node.
+# Plan gratuito: sin disco persistente, así que las reservas y los cambios del panel se pierden
+# en cada reinicio o nueva publicación. Para conservarlos: plan starter + disco
+# (descomenta el bloque «disk» y FILO_DATA_DIR=/var/data).
 services:
   - type: web
     name: filo-barberia
     runtime: node
-    plan: starter            # el disco persistente requiere un plan de pago
+    plan: free
     buildCommand: "true"     # sin dependencias que instalar
     startCommand: node server/server.mjs
     healthCheckPath: /api/public-config
@@ -12,15 +15,13 @@ services:
         value: "24"
       - key: HOST
         value: 0.0.0.0
-      - key: FILO_DATA_DIR
-        value: /var/data
       - key: FILO_SECURE_COOKIE
         value: "1"
       - key: FILO_TRUST_PROXY
         value: "1"
       - key: FILO_ADMIN_PASSWORD
         generateValue: true  # Render crea una contraseña segura; se consulta en Environment
-    disk:
-      name: filo-data
-      mountPath: /var/data
-      sizeGB: 1
+    # disk:
+    #   name: filo-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
