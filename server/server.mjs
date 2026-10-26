@@ -13,9 +13,11 @@ const WEB = path.join(ROOT, 'filo');
 const DATA_DIR = path.resolve(process.env.FILO_DATA_DIR || path.join(ROOT, 'data'));
 const CONFIG_PATH = path.resolve(process.env.FILO_CONFIG || path.join(HERE, 'config.json'));
 const PORT = Number(process.env.PORT || 8080);
-const HOST = process.env.HOST || '127.0.0.1';
-const SECURE_COOKIE = process.env.FILO_SECURE_COOKIE === '1';
-const TRUST_PROXY = process.env.FILO_TRUST_PROXY === '1';
+// En Render (variable RENDER) hay que escuchar en todas las interfaces, detrás de su proxy HTTPS
+const ON_RENDER = !!process.env.RENDER;
+const HOST = process.env.HOST || (ON_RENDER ? '0.0.0.0' : '127.0.0.1');
+const SECURE_COOKIE = process.env.FILO_SECURE_COOKIE ? process.env.FILO_SECURE_COOKIE === '1' : ON_RENDER;
+const TRUST_PROXY = process.env.FILO_TRUST_PROXY ? process.env.FILO_TRUST_PROXY === '1' : ON_RENDER;
 const SESSION_HOURS = 12;
 
 /* ------------------------------------------------------------------ Utilidades de fecha */
@@ -215,6 +217,7 @@ const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
   const file = path.join(DATA_DIR, 'admin-password.txt');
   fs.writeFileSync(file, pw + '\n', { mode: 0o600 });
   console.log(`[FILO] Contraseña inicial del panel guardada en ${file}`);
+  if (ON_RENDER) console.warn('[FILO] AVISO: en Render define la variable FILO_ADMIN_PASSWORD (Environment) para poder entrar en el panel.');
 })();
 function checkPassword(pw) {
   const [salt, hash] = q.setting.get('admin_pw').value.split(':');
